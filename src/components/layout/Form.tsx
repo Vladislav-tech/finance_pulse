@@ -13,7 +13,7 @@ function Form() {
   const [date, setDate] = useState('');
 
   const dispatch = useDispatch();
-  const lastId = useSelector((state) => state.transactions.transactions.at(-1).id);
+  const lastId: number | null = useSelector((state) => state?.transactions?.transactions?.at(-1)?.id);
 
   const clearForm = () => {
     setTitle('');

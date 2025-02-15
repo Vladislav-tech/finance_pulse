@@ -41,6 +41,7 @@ function Transactions() {
             date={item.date}
             amount={item.amount}
             category={item.category}
+            id={item.id}
           />
         ))}
       </ul>
