@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.text-red-400 {
+  --tw-text-opacity: 1;
+  color: rgb(248 113 113 / var(--tw-text-opacity, 1));
+}
+
+.text-green-400 {
+  --tw-text-opacity: 1;
+  color: rgb(74 222 128 / var(--tw-text-opacity, 1));
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+#transactions li {
+  animation: fade-in 0.4s ease forwards;
+  opacity: 0;
+}
+
+.transaction-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.transaction-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateX(8px);
+}
+
+.category-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Стили для Flatpickr */
+.flatpickr-calendar {
+  background: #1F2937 !important;
+  border: 1px solid #374151 !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3) !important;
+}
+
+.flatpickr-day.selected {
+  background: #3B82F6 !important;
+  border-color: #3B82F6 !important;
+}
+
+.flatpickr-time input {
+  color: #E5E7EB !important;
+}
+
+.flatpickr-day.today {
+  border-color: #3B82F6 !important;
+}
+
+.flatpickr-day:hover {
+  background: #374151 !important;
+}
+
+/* Анимации */
+@keyframes slideIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
