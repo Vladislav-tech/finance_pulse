@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import formatCurrency from '../../utils/helpers/formatCurrency';
 import { TransactionCategory } from '../../utils/types';
-import { categoryIcons } from '../../utils/helpers/getCategoryIcon';
+import getCategoryIcon from '../../utils/helpers/getCategoryIcon';
 import { useDispatch } from 'react-redux';
 import { removeTransaction } from '../../redux/transactionsSlice';
 
@@ -23,7 +23,7 @@ function TransactionItem({ title, date, amount, category, id }: TransactionItemP
     <li className="transaction-item p-4 rounded-lg flex items-center justify-between">
       <div className="flex items-center space-x-4">
         <div className="category-icon text-blue-400">
-        <FontAwesomeIcon icon={categoryIcons[category.toLowerCase()]} />
+        <FontAwesomeIcon icon={getCategoryIcon(category)} />
         </div>
         <div>
           <div className="font-medium text-gray-200">{title}</div>

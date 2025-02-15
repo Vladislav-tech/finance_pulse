@@ -4,6 +4,7 @@ import { Transaction, TransactionType } from "../../utils/types";
 import { useDispatch, useSelector } from "react-redux";
 import { addTransaction } from "../../redux/transactionsSlice";
 import { stringToTransactionCategory } from "../../utils/helpers/stringToTransactionCategory";
+import { RootState } from "../../redux/store";
 
 function Form() {
   const [title, setTitle] = useState('');
@@ -13,7 +14,7 @@ function Form() {
   const [date, setDate] = useState('');
 
   const dispatch = useDispatch();
-  const lastId: number | null = useSelector((state) => state?.transactions?.transactions?.at(-1)?.id);
+  const lastId: number | null = useSelector((state: RootState) => state.transactions.transactions.at(-1)?.id);
 
   const clearForm = () => {
     setTitle('');
@@ -23,8 +24,9 @@ function Form() {
     setDate('');
   }
 
-  const addData = (event: any) => {
+  const addData = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+    console.log(event)
     
     const newTransaction: Transaction = {
       title,
@@ -32,7 +34,7 @@ function Form() {
       category: stringToTransactionCategory(category),
       type: type === 'income' ? TransactionType.INCOME : TransactionType.EXPENSE,
       date: new Date(date),
-      id: lastId + 1
+      id: (lastId || 0) + 1
     }
 
     clearForm();

@@ -4,6 +4,7 @@ import { Transaction, TransactionCategory, TransactionType } from '../utils/type
 
 interface InitialStateInterface {
   transactions: Transaction[];
+  amount: number
 }
 
 const initialState: InitialStateInterface = {
@@ -25,6 +26,7 @@ const initialState: InitialStateInterface = {
         amount: 125000
       }
   ],
+  amount: 125100
 };
 
 const transactionsSlice = createSlice({
@@ -32,7 +34,7 @@ const transactionsSlice = createSlice({
   initialState,
   reducers: {
     addTransaction(state, action: PayloadAction<Transaction>) {
-      console.log(action)
+      state.amount += action.payload.amount;
       state.transactions.push(action.payload);
     },
     removeTransaction(state, action: PayloadAction<number>) {

@@ -2,9 +2,10 @@ import TransactionItem from '../ui/TransactionItem';
 
 import { useSelector } from 'react-redux';
 import { Transaction } from '../../utils/types';
+import { RootState } from '../../redux/store';
 
 function Transactions() {
-  const items = useSelector((state: any) => state.transactions.transactions);
+  const items = useSelector((state: RootState) => state.transactions.transactions);
   return (
     <div className="lg:col-span-3 glass-card p-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
