@@ -6,10 +6,11 @@
   ],
   "compilerOptions": {
     "target": "ES2022",
-    "baseUrl": "./src",
+    "baseUrl": "src",
     "paths": {
       "@components/*": ["components/*"],
-      "@components": ["components/index"]
+      "@redux/*": ["redux/*"],
+      "@utils/*": ["utils/*"]
     } 
   }
 }

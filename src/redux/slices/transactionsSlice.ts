@@ -7,42 +7,46 @@ interface InitialStateInterface {
   amount: number;
 }
 
+const transactions: Transaction[] = [
+  {
+    id: 1,
+    title: 'Lunch',
+    date: new Date().toLocaleDateString(),
+    category: 'Food',
+    type: 'expense',
+    amount: -1200,
+  },
+  {
+    id: 2,
+    title: 'Salary',
+    date: new Date().toLocaleDateString(),
+    category: 'Salary',
+    type: 'income',
+    amount: 125000,
+  },
+  {
+    id: 3,
+    title: 'Dinner',
+    date:new Date().toLocaleDateString(),
+    category: 'Food',
+    type: 'expense',
+    amount: -5000,
+  },
+  {
+    id: 4,
+    title: 'Transport',
+    date: new Date().toLocaleDateString(),
+    category: 'Transport',
+    type: 'expense',
+    amount: -3300,
+  },
+];
+
+const amount = 115500;
+
 const initialState: InitialStateInterface = {
-  transactions: [
-    {
-      id: 1,
-      title: 'Lunch',
-      date: new Date().toLocaleDateString(),
-      category: 'Food',
-      type: 'expense',
-      amount: -1200,
-    },
-    {
-      id: 2,
-      title: 'Salary',
-      date: new Date().toLocaleDateString(),
-      category: 'Salary',
-      type: 'income',
-      amount: 125000,
-    },
-    {
-      id: 3,
-      title: 'Dinner',
-      date:new Date().toLocaleDateString(),
-      category: 'Food',
-      type: 'expense',
-      amount: -5000,
-    },
-    {
-      id: 4,
-      title: 'Transport',
-      date: new Date().toLocaleDateString(),
-      category: 'Transport',
-      type: 'expense',
-      amount: -3300,
-    },
-  ],
-  amount: 115500,
+  transactions: transactions,
+  amount: amount,
 
 };
 

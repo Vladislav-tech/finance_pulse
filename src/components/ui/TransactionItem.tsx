@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import formatCurrency from '../../utils/helpers/formatCurrency';
@@ -13,21 +14,20 @@ interface TransactionItemProps {
   id: number;
 }
 
-function TransactionItem({ title, date, amount, category, id }: TransactionItemProps) {
+const TransactionItem = forwardRef<HTMLLIElement, TransactionItemProps>(
+  ({ title, date, amount, category, id }, ref) => {
+    const dispatch = useDispatch();
+    const color = amount > 0 ? 'green' : 'red';
 
-  const dispatch = useDispatch();
-
-  const color = amount > 0 ? 'green' : 'red';
-  return (
-    <li className="transaction-item p-4 rounded-lg flex items-center justify-between">
-      <div className="flex items-center space-x-4">
-        <div className="category-icon text-blue-400">
-        <FontAwesomeIcon icon={getCategoryIcon(category)} />
-        </div>
-        <div>
-          <div className="font-medium text-gray-200">{title}</div>
-          <div className="text-sm text-gray-400 flex items-center space-x-3">
-            <span>
+    return (
+      <li ref={ref} className="transaction-item p-4 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between space-y-4 sm:space-y-0">
+        <div className="flex flex-row items-center space-x-4">
+          <div className="category-icon text-blue-400">
+            <FontAwesomeIcon icon={getCategoryIcon(category)} size="lg" />
+          </div>
+          <div className="flex-1 flex flex-row items-center space-x-3 overflow-x-auto">
+            <span className="font-medium text-gray-200 truncate whitespace-nowrap">{title}</span>
+            <span className="text-sm text-gray-400 truncate whitespace-nowrap">
               {date.toLocaleString('ru', {
                 month: 'long',
                 day: 'numeric',
@@ -35,20 +35,24 @@ function TransactionItem({ title, date, amount, category, id }: TransactionItemP
                 year: 'numeric',
               })}
             </span>
-            <span className={`text-xs px-2 py-1 rounded-full bg-${color}-900/50 text-${color}-400`}>
+            <span className={`text-xs px-2 py-1 rounded-full bg-${color}-900/50 text-${color}-400 truncate whitespace-nowrap`}>
               {category}
             </span>
           </div>
         </div>
-      </div>
-      <div className="flex items-center space-x-4">
-        <span className={`text-${color}-400 font-medium`}>{formatCurrency(amount)} ₽</span>
-        <button className="text-gray-400 hover:text-red-400 transition-colors cursor-pointer" onClick={() => dispatch(removeTransaction(id))} title="Удалить">
-          <FontAwesomeIcon icon={faTrashCan} />
-        </button>
-      </div>
-    </li>
-  );
-}
+        <div className="flex flex-row items-center justify-between space-x-4 w-full sm:w-auto">
+          <span className={`text-${color}-400 font-medium`}>{formatCurrency(amount)} ₽</span>
+          <button
+            className="text-gray-400 hover:text-red-400 transition-colors cursor-pointer"
+            onClick={() => dispatch(removeTransaction(id))}
+            title="Удалить"
+          >
+            <FontAwesomeIcon icon={faTrashCan} />
+          </button>
+        </div>
+      </li>
+    );
+  }
+);
 
 export default TransactionItem;

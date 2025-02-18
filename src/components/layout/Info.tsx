@@ -4,6 +4,16 @@ import formatCurrency from "../../utils/helpers/formatCurrency";
 import { Transaction } from "../../utils/types";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import getCategoryIcon from '../../utils/helpers/getCategoryIcon';
+import CountUp from 'react-countup';
+import { useEffect, useRef } from "react";
+
+function usePrevious<T>(value: T): T | undefined {
+  const ref = useRef<T>(value);
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
+  return ref.current;
+}
 
 function Info() {
   const transactions = useSelector((state: RootState) => state.transactions.transactions);
@@ -18,6 +28,12 @@ function Info() {
     .reduce((sum: number, t: Transaction) => sum + t.amount, 0);
 
   const transactionCount = transactions.length;
+
+  // Запоминаем предыдущие значения
+  const prevAmount = usePrevious(amount) ?? amount;
+  const prevIncome = usePrevious(income) ?? income;
+  const prevExpense = usePrevious(expense) ?? expense;
+  const prevTransactionCount = usePrevious(transactionCount) ?? transactionCount;
 
   // Вычисляем самую частую категорию
   let frequentCategory: string | null = null;
@@ -47,25 +63,47 @@ function Info() {
             : "text-transparent bg-gradient-to-r from-green-400 to-cyan-500"
         }`}
       >
-        {formatCurrency(amount)} ₽
+        <CountUp 
+          start={prevAmount} 
+          end={amount} 
+          duration={1.5} 
+          formattingFn={(value) => formatCurrency(value)} 
+          suffix=" ₽" 
+        />
       </p>
       <div className="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="p-4 bg-gray-800 rounded-lg shadow">
           <h3 className="text-gray-400 text-sm">Доходы</h3>
           <p className="text-xl font-semibold text-green-400">
-            {formatCurrency(income)} ₽
+            <CountUp 
+              start={prevIncome} 
+              end={income} 
+              duration={1.5} 
+              formattingFn={(value) => formatCurrency(value)} 
+              suffix=" ₽" 
+            />
           </p>
         </div>
         <div className="p-4 bg-gray-800 rounded-lg shadow">
           <h3 className="text-gray-400 text-sm">Расходы</h3>
           <p className="text-xl font-semibold text-red-400">
-            {formatCurrency(Math.abs(expense))} ₽
+            <CountUp 
+              start={Math.abs(prevExpense)} 
+              end={Math.abs(expense)} 
+              duration={1.5} 
+              formattingFn={(value) => formatCurrency(value)} 
+              suffix=" ₽" 
+            />
           </p>
         </div>
         <div className="p-4 bg-gray-800 rounded-lg shadow">
           <h3 className="text-gray-400 text-sm">Операций</h3>
           <p className="text-xl font-semibold text-gray-300">
-            {transactionCount}
+            <CountUp 
+              start={prevTransactionCount} 
+              end={transactionCount} 
+              duration={1.5} 
+            />
           </p>
         </div>
         {frequentCategory && (

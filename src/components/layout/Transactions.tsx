@@ -1,3 +1,4 @@
+import { motion, AnimatePresence } from 'framer-motion'
 import TransactionItem from '../ui/TransactionItem';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -5,6 +6,8 @@ import { Transaction } from '../../utils/types';
 import { RootState } from '../../redux/store';
 import { useState } from 'react';
 import { setSortType, setCategory, setSortBy } from '../../redux/slices/filterSlice';
+
+const MotionTransactionItem = motion(TransactionItem);
 
 function Transactions() {
   const [type, setType] = useState('all');
@@ -26,15 +29,13 @@ function Transactions() {
 
   const filteredItems = items
     .filter((transaction: Transaction) => {
-      if (filter.type === 'all' && filter.category === 'all') {
-        return true;
+      if (filter.type !== 'all' && transaction.type !== filter.type) {
+        return false;
       }
-      if (filter.type === transaction.type) {
-        return true;
+      if (filter.category !== 'all' && transaction.category !== filter.category) {
+        return false;
       }
-      if (filter.category === transaction.category) {
-        return true;
-      }
+      return true;
     })
     .sort((a: Transaction, b: Transaction) => {
       if (filter.sortBy === 'date_desc') {
@@ -71,12 +72,13 @@ function Transactions() {
     <div className="lg:col-span-3 glass-card p-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
         <h2 className="text-xl font-semibold text-gray-300">История операций</h2>
-        <div className="flex flex-wrap gap-3 w-full md:w-auto">
+        <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
           <select
             id="filterType"
             value={type}
-            onChange={(e) => handleTypeChange(e)}
-            className="bg-gray-800/50 border border-gray-700 rounded-lg px-3 py-2 text-gray-300 text-sm">
+            onChange={handleTypeChange}
+            className="w-full sm:w-auto bg-gray-800/50 border border-gray-700 rounded-lg px-3 py-2 text-gray-300 text-sm"
+          >
             <option value="all">Все типы</option>
             <option value="income">Доходы</option>
             <option value="expense">Расходы</option>
@@ -84,8 +86,9 @@ function Transactions() {
           <select
             id="filterCategory"
             value={category}
-            onChange={(e) => handleCategoryChange(e)}
-            className="bg-gray-800/50 border border-gray-700 rounded-lg px-3 py-2 text-gray-300 text-sm">
+            onChange={handleCategoryChange}
+            className="w-full sm:w-auto bg-gray-800/50 border border-gray-700 rounded-lg px-3 py-2 text-gray-300 text-sm"
+          >
             <option value="all">Все категории</option>
             {availableCategories.map((category: string, index: number) => (
               <option key={index} value={category}>
@@ -96,8 +99,9 @@ function Transactions() {
           <select
             id="sortBy"
             value={orderBy}
-            onChange={(e) => handleOrderByChange(e)}
-            className="bg-gray-800/50 border border-gray-700 rounded-lg px-3 py-2 text-gray-300 text-sm">
+            onChange={handleOrderByChange}
+            className="w-full sm:w-auto bg-gray-800/50 border border-gray-700 rounded-lg px-3 py-2 text-gray-300 text-sm"
+          >
             <option value="date_desc">Сначала новые</option>
             <option value="date_asc">Сначала старые</option>
             <option value="amount_desc">Сумма (по убыв.)</option>
@@ -107,16 +111,22 @@ function Transactions() {
       </div>
 
       <ul className="space-y-3">
-        {filteredItems.map((item: Transaction) => (
-          <TransactionItem
-            key={item.id}
-            title={item.title}
-            date={item.date}
-            amount={item.amount}
-            category={item.category}
-            id={item.id}
-          />
-        ))}
+        <AnimatePresence>
+          {filteredItems.map((item: Transaction) => (
+            <MotionTransactionItem
+              key={item.id}
+              title={item.title}
+              date={item.date}
+              amount={item.amount}
+              category={item.category}
+              id={item.id}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3 }}
+            />
+          ))}
+        </AnimatePresence>
       </ul>
     </div>
   );

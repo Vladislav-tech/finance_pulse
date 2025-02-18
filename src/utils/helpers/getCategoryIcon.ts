@@ -17,7 +17,8 @@ function getCategoryIcon(category: string): IconDefinition {
     case 'Other':
       return faWallet;
     default:
-      throw new Error('Unknown category');
+      console.log('category not found');
+      return faWallet;
   }
 }
 
