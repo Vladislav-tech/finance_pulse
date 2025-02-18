@@ -71,7 +71,7 @@ function Info() {
           suffix=" ₽" 
         />
       </p>
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="mt-6 grid grid-cols-2 md:grid-cols-2 gap-4">
         <div className="p-4 bg-gray-800 rounded-lg shadow">
           <h3 className="text-gray-400 text-sm">Доходы</h3>
           <p className="text-xl font-semibold text-green-400">
