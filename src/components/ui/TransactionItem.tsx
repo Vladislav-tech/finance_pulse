@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import formatCurrency from '../../utils/helpers/formatCurrency';
-import { TransactionCategory } from '../../utils/types';
 import getCategoryIcon from '../../utils/helpers/getCategoryIcon';
 import { useDispatch } from 'react-redux';
 import { removeTransaction } from '../../redux/slices/transactionsSlice';
@@ -9,7 +8,7 @@ import { removeTransaction } from '../../redux/slices/transactionsSlice';
 interface TransactionItemProps {
   title: string;
   date: Date;
-  category: TransactionCategory;
+  category: string;
   amount: number;
   id: number;
 }
@@ -44,7 +43,7 @@ function TransactionItem({ title, date, amount, category, id }: TransactionItemP
       </div>
       <div className="flex items-center space-x-4">
         <span className={`text-${color}-400 font-medium`}>{formatCurrency(amount)} ₽</span>
-        <button className="text-gray-400 hover:text-red-400 transition-colors cursor-pointer" onClick={() => dispatch(removeTransaction(id))}>
+        <button className="text-gray-400 hover:text-red-400 transition-colors cursor-pointer" onClick={() => dispatch(removeTransaction(id))} title="Удалить">
           <FontAwesomeIcon icon={faTrashCan} />
         </button>
       </div>

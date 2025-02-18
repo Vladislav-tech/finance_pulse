@@ -1,5 +1,5 @@
 import './App.css';
-import Balance from './components/layout/Balance';
+import Balance from './components/layout/Info';
 import Form from './components/layout/Form';
 import Transactions from './components/layout/Transactions';
 import Header from './components/ui/Header';
