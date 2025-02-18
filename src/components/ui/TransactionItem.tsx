@@ -4,7 +4,7 @@ import formatCurrency from '../../utils/helpers/formatCurrency';
 import { TransactionCategory } from '../../utils/types';
 import getCategoryIcon from '../../utils/helpers/getCategoryIcon';
 import { useDispatch } from 'react-redux';
-import { removeTransaction } from '../../redux/transactionsSlice';
+import { removeTransaction } from '../../redux/slices/transactionsSlice';
 
 interface TransactionItemProps {
   title: string;

@@ -1,17 +1,19 @@
-import { useState } from 'react';
-import { Transaction, TransactionType } from '../../utils/types';
+import { useState, useRef } from 'react';
+import { Transaction } from '../../utils/types';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { addTransaction } from '../../redux/transactionsSlice';
-import { stringToTransactionCategory } from '../../utils/helpers/stringToTransactionCategory';
+import { addTransaction } from '../../redux/slices/transactionsSlice';
 import { RootState } from '../../redux/store';
+import isPositiveNumber from '../../utils/helpers/isPositiveNumber';
 
 function Form() {
   const [title, setTitle] = useState('');
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState('');
   const [type, setType] = useState('');
   const [category, setCategory] = useState('Other');
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState('2025-01-01');
+
+  const amountInputRef = useRef(null);
 
   const dispatch = useDispatch();
   const lastId: number | undefined = useSelector(
@@ -20,41 +22,27 @@ function Form() {
 
   const clearForm = () => {
     setTitle('');
-    setAmount(0);
+    setAmount('');
     setType('');
     setCategory('');
-    setDate('');
+    setDate('2025-01-01');
   };
 
-  // const isValidForm = (): boolean => {
-  //   if (
-  //     title.trim() === '' ||
-  //     amount === 0 ||
-  //     type.trim() === '' ||
-  //     category.trim() === '' ||
-  //     date.trim() === ''
-  //   ) {
-  //     return false;
-  //   }
 
-  //   return true;
-  // };
+  const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (isPositiveNumber(event.target.value)) {
+      setAmount(event.target.value);
+    }
+  }
 
-  const addData = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit  = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    // console.log(isValidForm());
-
-    // if (!isValidForm()) {
-    //   return;
-    // }
-
     const newTransaction: Transaction = {
       title,
-      amount: type === 'expense' ? -amount : amount,
-      category: stringToTransactionCategory(category),
-      type: type === 'income' ? TransactionType.INCOME : TransactionType.EXPENSE,
-      date: new Date(date),
+      amount: type === 'expense' ? -amount : +amount,
+      category,
+      type,
+      date: new Date(date).toLocaleDateString(),
       id: (lastId || 0) + 1,
     };
 
@@ -63,9 +51,10 @@ function Form() {
     dispatch(addTransaction(newTransaction));
   };
 
+
   return (
     <div className="glass-card p-6">
-      <form id="transactionForm" className="space-y-4">
+      <form id="transactionForm" className="space-y-4" onSubmit={(event) => handleSubmit(event)}>
         <div className="space-y-4">
           <input
             type="text"
@@ -76,9 +65,10 @@ function Form() {
             required
           />
           <input
-            type="number"
+            type="text"
+            ref={amountInputRef}
             value={amount}
-            onChange={(e) => setAmount(+e.target.value)}
+            onChange={(e) => handleAmountChange(e)}
             className="w-full bg-gray-800/50 border border-gray-700 rounded-lg px-4 py-3 text-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             placeholder="Сумма"
             required
@@ -119,7 +109,6 @@ function Form() {
           </div>
         </div>
         <button
-          onClick={(event) => addData(event)}
           type="submit"
           className="w-full cursor-pointer bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-3 rounded-lg transition-all hover:scale-[1.02]">
           <i className="fas fa-plus-circle mr-2" />
