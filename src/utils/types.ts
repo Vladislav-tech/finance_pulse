@@ -15,7 +15,8 @@
 
 export interface Transaction {
   id: number;
-  date: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  date: any;
   title: string;
   type: string;
   category: string;

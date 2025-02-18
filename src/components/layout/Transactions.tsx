@@ -49,6 +49,7 @@ function Transactions() {
       if (filter.sortBy === 'amount_asc') {
         return a.amount - b.amount;
       }
+      return 0;
     });
 
   const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
