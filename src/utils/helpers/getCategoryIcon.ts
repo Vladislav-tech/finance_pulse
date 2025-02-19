@@ -1,31 +1,48 @@
-import { faUtensils, IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import { faCar } from '@fortawesome/free-solid-svg-icons';
-import { faBagShopping } from '@fortawesome/free-solid-svg-icons';
-import { faMoneyBillTrendUp } from '@fortawesome/free-solid-svg-icons';
-import { faWallet } from '@fortawesome/free-solid-svg-icons';
+import {
+  faUtensils,
+  faCar,
+  faBagShopping,
+  faMoneyBillTrendUp,
+  faWallet,
+  faGamepad,
+  faNotesMedical,
+  faMoneyBillTransfer,
+  IconDefinition,
+} from '@fortawesome/free-solid-svg-icons';
+import { TransactionCategory } from '../types';
 
 /**
- * Returns the corresponding FontAwesome icon for a given category.
- * 
- * @param category - The category for which to retrieve the icon. Supported categories are:
- *   - `'Food'`: Returns a utensils icon.
- *   - `'Transport'`: Returns a car icon.
- *   - `'Shopping'`: Returns a shopping bag icon.
- *   - `'Salary'`: Returns a money bill trend-up icon.
- *   - `'Other'`: Returns a wallet icon.
- * 
+ * Returns the corresponding FontAwesome icon for a given financial category.
+ *
+ * @param category - The financial category for which to retrieve the icon. Supported categories are:
+ *   - `'Food'`: Utensils icon 
+ *   - `'Transport'`: Car icon 
+ *   - `'Shopping'`: Shopping bag icon 
+ *   - `'Salary'`: Money bill with upward trend icon 
+ *   - `'Entertainment'`: Gamepad icon 
+ *   - `'Health'`: Medical notes icon 
+ *   - `'Taxes'`: Money transfer icon 
+ *   - `'Other'`: Default wallet icon 
+ *
  * @returns The FontAwesome `IconDefinition` corresponding to the provided category.
- *          If the category is not found, a wallet icon is returned as the default,
- *          and a warning is logged to the console.
- * 
+ *          Returns wallet icon and logs a warning for unrecognized categories.
+ *
  * @example
  * ```typescript
- * getCategoryIcon('Food');      // Returns the utensils icon
- * getCategoryIcon('Transport'); // Returns the car icon
- * getCategoryIcon('Unknown');   // Logs a warning and returns the wallet icon
+ * // Returns utensils icon
+ * getCategoryIcon('Food');
+ *
+ * // Returns car icon
+ * getCategoryIcon('Transport');
+ *
+ * // Returns gamepad icon
+ * getCategoryIcon('Entertainment');
+ *
+ * // Returns wallet icon and logs warning
+ * getCategoryIcon('Unknown');
  * ```
  */
-function getCategoryIcon(category: string): IconDefinition {
+function getCategoryIcon(category: TransactionCategory): IconDefinition {
   switch (category) {
     case 'Food':
       return faUtensils;
@@ -35,10 +52,16 @@ function getCategoryIcon(category: string): IconDefinition {
       return faBagShopping;
     case 'Salary':
       return faMoneyBillTrendUp;
+    case 'Entertainment':
+      return faGamepad;
+    case 'Health':
+      return faNotesMedical;
+    case 'Taxes':
+      return faMoneyBillTransfer;
     case 'Other':
       return faWallet;
     default:
-      console.log('category not found ', category);
+      console.warn(`Unrecognized category: "${category}". Falling back to wallet icon.`);
       return faWallet;
   }
 }

@@ -5,6 +5,7 @@ import formatCurrency from '../../utils/helpers/formatCurrency';
 import getCategoryIcon from '../../utils/helpers/getCategoryIcon';
 import { useDispatch } from 'react-redux';
 import { removeTransaction } from '../../redux/slices/transactionsSlice';
+import { TransactionCategory } from '../../utils/types';
 
 interface TransactionItemProps {
   title: string;
@@ -12,18 +13,24 @@ interface TransactionItemProps {
   category: string;
   amount: number;
   id: number;
+  notifyRemoveTransaction(): string;
 }
 
 const TransactionItem = forwardRef<HTMLLIElement, TransactionItemProps>(
-  ({ title, date, amount, category, id }, ref) => {
+  ({ title, date, amount, category, id, notifyRemoveTransaction }, ref) => {
     const dispatch = useDispatch();
     const color = amount > 0 ? 'green' : 'red';
+
+    const removeHandler = () => {
+      dispatch(removeTransaction(id));
+      notifyRemoveTransaction();
+    }
 
     return (
       <li ref={ref} className="transaction-item p-4 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between space-y-4 sm:space-y-0">
         <div className="flex flex-row items-center space-x-4">
           <div className="category-icon text-blue-400">
-            <FontAwesomeIcon icon={getCategoryIcon(category)} size="lg" />
+            <FontAwesomeIcon icon={getCategoryIcon(category as TransactionCategory)} size="lg" />
           </div>
           <div className="flex-1 flex flex-row items-center space-x-3 overflow-x-auto">
             <span className="font-medium text-gray-200 truncate whitespace-nowrap">{title}</span>
@@ -39,7 +46,7 @@ const TransactionItem = forwardRef<HTMLLIElement, TransactionItemProps>(
           <span className={`text-${color}-400 font-medium`}>{formatCurrency(amount)} ₽</span>
           <button
             className="text-gray-400 hover:text-red-400 transition-colors cursor-pointer"
-            onClick={() => dispatch(removeTransaction(id))}
+            onClick={removeHandler}
             title="Удалить"
           >
             <FontAwesomeIcon icon={faTrashCan} />

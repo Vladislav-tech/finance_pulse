@@ -1,9 +1,9 @@
 /**
  * Check if value is positive number
- * 
+ *
  * @param str - string to check
  * @returns boolean
- * 
+ *
  * @example
  * ```typescript
  * isPositiveNumber("42");      // true

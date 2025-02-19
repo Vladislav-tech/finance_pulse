@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion';
 import TransactionItem from '../ui/TransactionItem';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,9 +7,13 @@ import { RootState } from '../../redux/store';
 import { useState } from 'react';
 import { setSortType, setCategory, setSortBy } from '../../redux/slices/filterSlice';
 
-const MotionTransactionItem = motion(TransactionItem);
+const MotionTransactionItem = motion.create(TransactionItem);
 
-function Transactions() {
+interface TransactionProps {
+  notifyRemoveTransaction(): string;
+}
+
+function Transactions({ notifyRemoveTransaction }: TransactionProps) {
   const [type, setType] = useState('all');
   const [category, setSortCategory] = useState('all');
   const [orderBy, setOrderByLocal] = useState('date_desc');
@@ -78,8 +82,7 @@ function Transactions() {
             id="filterType"
             value={type}
             onChange={handleTypeChange}
-            className="w-full sm:w-auto bg-gray-800/50 border border-gray-700 rounded-lg px-3 py-2 text-gray-300 text-sm"
-          >
+            className="w-full sm:w-auto bg-gray-800/50 border border-gray-700 rounded-lg px-3 py-2 text-gray-300 text-sm">
             <option value="all">Все типы</option>
             <option value="income">Доходы</option>
             <option value="expense">Расходы</option>
@@ -88,8 +91,7 @@ function Transactions() {
             id="filterCategory"
             value={category}
             onChange={handleCategoryChange}
-            className="w-full sm:w-auto bg-gray-800/50 border border-gray-700 rounded-lg px-3 py-2 text-gray-300 text-sm"
-          >
+            className="w-full sm:w-auto bg-gray-800/50 border border-gray-700 rounded-lg px-3 py-2 text-gray-300 text-sm">
             <option value="all">Все категории</option>
             {availableCategories.map((category: string, index: number) => (
               <option key={index} value={category}>
@@ -101,8 +103,7 @@ function Transactions() {
             id="sortBy"
             value={orderBy}
             onChange={handleOrderByChange}
-            className="w-full sm:w-auto bg-gray-800/50 border border-gray-700 rounded-lg px-3 py-2 text-gray-300 text-sm"
-          >
+            className="w-full sm:w-auto bg-gray-800/50 border border-gray-700 rounded-lg px-3 py-2 text-gray-300 text-sm">
             <option value="date_desc">Сначала новые</option>
             <option value="date_asc">Сначала старые</option>
             <option value="amount_desc">Сумма (по убыв.)</option>
@@ -113,20 +114,25 @@ function Transactions() {
 
       <ul className="space-y-3">
         <AnimatePresence>
-          {filteredItems.map((item: Transaction) => (
-            <MotionTransactionItem
-              key={item.id}
-              title={item.title}
-              date={item.date}
-              amount={item.amount}
-              category={item.category}
-              id={item.id}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.3 }}
-            />
-          ))}
+          {filteredItems.length === 0 ? (
+            <p className="text-gray-400 text-center py-4">Нет транзакций</p>
+          ) : (
+            filteredItems.map((item: Transaction) => (
+              <MotionTransactionItem
+                key={item.id}
+                title={item.title}
+                date={item.date}
+                amount={item.amount}
+                category={item.category}
+                notifyRemoveTransaction={notifyRemoveTransaction}
+                id={item.id}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.3 }}
+              />
+            ))
+          )}
         </AnimatePresence>
       </ul>
     </div>

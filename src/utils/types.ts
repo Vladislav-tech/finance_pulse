@@ -1,13 +1,28 @@
+export const AVAILABLE_CATEGORIES = {
+  Other: 'Другое',
+  Food: 'Еда',
+  Transport: 'Транспорт',
+  Shopping: 'Шоппинг',
+  Salary: 'Зарплата',
+  Taxes: 'Налоги',
+  Health: 'Здоровье',
+  Entertainment: 'Развлечения',
+} as const;
+
 /**
- * Represents the category of a transaction.
+ * @remarks
+ * Possible values are the keys of {@link AVAILABLE_CATEGORIES}:
  *
  * - `'Food'`: Transactions related to food expenses.
  * - `'Salary'`: Transactions related to income from salary.
  * - `'Shopping'`: Transactions related to shopping expenses.
  * - `'Transport'`: Transactions related to transportation expenses.
+ * - `'Entertainment'`: Transactions related to entertainment expenses.
+ * - `'Health'`: Transactions related to health expenses.
+ * - `'Taxes'`: Transactions related to taxes expenses.
  * - `'Other'`: Transactions that do not fit into the other categories.
  */
-export type TransactionCategory = 'Food' | 'Salary' | 'Shopping' | 'Transport' | 'Other';
+export type TransactionCategory = keyof typeof AVAILABLE_CATEGORIES;
 
 /**
  * Represents the type of a transaction.

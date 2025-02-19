@@ -1,11 +1,11 @@
 /**
  * Formats a number as a currency string using Russian locale formatting rules.
- * 
+ *
  * @param amount - The numeric value to format as a currency string.
- * 
+ *
  * @returns A string representing the formatted number with two decimal places,
  *          using Russian locale conventions (e.g., `1,234.56`).
- * 
+ *
  * @example
  * ```typescript
  * formatCurrency(1234.56);  // Returns "1 234,56"
