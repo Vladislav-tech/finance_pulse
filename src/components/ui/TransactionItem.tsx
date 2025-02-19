@@ -8,7 +8,7 @@ import { removeTransaction } from '../../redux/slices/transactionsSlice';
 
 interface TransactionItemProps {
   title: string;
-  date: Date;
+  date: string;
   category: string;
   amount: number;
   id: number;
@@ -28,12 +28,7 @@ const TransactionItem = forwardRef<HTMLLIElement, TransactionItemProps>(
           <div className="flex-1 flex flex-row items-center space-x-3 overflow-x-auto">
             <span className="font-medium text-gray-200 truncate whitespace-nowrap">{title}</span>
             <span className="text-sm text-gray-400 truncate whitespace-nowrap">
-              {date.toLocaleString('ru', {
-                month: 'long',
-                day: 'numeric',
-                weekday: 'long',
-                year: 'numeric',
-              })}
+              {date}
             </span>
             <span className={`text-xs px-2 py-1 rounded-full bg-${color}-900/50 text-${color}-400 truncate whitespace-nowrap`}>
               {category}

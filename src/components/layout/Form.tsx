@@ -1,15 +1,31 @@
 import { useState, useRef } from 'react';
-import { Transaction } from '../../utils/types';
+import { Transaction, TransactionCategory, TransactionType } from '../../utils/types';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { addTransaction } from '../../redux/slices/transactionsSlice';
 import { RootState } from '../../redux/store';
 import isPositiveNumber from '../../utils/helpers/isPositiveNumber';
 
+const AvailableCategories = {
+  Other: 'Другое',
+  Food: 'Еда',
+  Transport: 'Транспорт',
+  Shopping: 'Шоппинг',
+  Salary: 'Зарплата',
+};
+
+const Options = Object.entries(AvailableCategories).map(
+  ([key, value]: [string, string], index: number) => (
+    <option key={index} value={key}>
+      {value}
+    </option>
+  ),
+);
+
 function Form() {
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
-  const [type, setType] = useState('');
+  const [type, setType] = useState('income');
   const [category, setCategory] = useState('Other');
   const [date, setDate] = useState('2025-01-01');
 
@@ -23,25 +39,28 @@ function Form() {
   const clearForm = () => {
     setTitle('');
     setAmount('');
-    setType('');
-    setCategory('');
+    setType('income');
+    setCategory('Other');
     setDate('2025-01-01');
   };
 
-
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (isPositiveNumber(event.target.value)) {
+    if (isPositiveNumber(event.target.value) || event.target.value === '') {
       setAmount(event.target.value);
     }
-  }
+  };
 
-  const handleSubmit  = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleChangeCategory = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setCategory(event.target.value);
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const newTransaction: Transaction = {
       title,
       amount: type === 'expense' ? -amount : +amount,
-      category,
-      type,
+      category: category as TransactionCategory,
+      type: type as TransactionType,
       date: new Date(date).toLocaleDateString(),
       id: (lastId || 0) + 1,
     };
@@ -50,7 +69,6 @@ function Form() {
 
     dispatch(addTransaction(newTransaction));
   };
-
 
   return (
     <div className="glass-card p-6">
@@ -85,15 +103,11 @@ function Form() {
             </select>
             <select
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => handleChangeCategory(e)}
               id="category"
               required
               className="bg-gray-800/50 border border-gray-700 rounded-lg px-4 py-3 text-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-              <option value="Other">Другое</option>
-              <option value="Food">Еда</option>
-              <option value="Transport">Транспорт</option>
-              <option value="Shopping">Шопинг</option>
-              <option value="Salary">Зарплата</option>
+              {Options}
             </select>
           </div>
           <div className="flatpickr-container">

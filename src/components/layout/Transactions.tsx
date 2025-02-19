@@ -27,6 +27,7 @@ function Transactions() {
   const availableCategories = selectAvailableCategories(useSelector((state: RootState) => state));
   const dispatch = useDispatch();
 
+  // TODO: fix filters
   const filteredItems = items
     .filter((transaction: Transaction) => {
       if (filter.type !== 'all' && transaction.type !== filter.type) {

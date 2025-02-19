@@ -1,5 +1,4 @@
-import './App.css';
-import Balance from './components/layout/Info';
+import Info from './components/layout/Info';
 import Form from './components/layout/Form';
 import Transactions from './components/layout/Transactions';
 import Header from './components/ui/Header';
@@ -10,7 +9,7 @@ function App() {
     <div className="container mx-auto px-4 py-8">
       <Header />
       <main className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Balance />
+        <Info />
         <Form />
         <Transactions />
       </main>

@@ -11,7 +11,7 @@ const transactions: Transaction[] = [
   {
     id: 1,
     title: 'Lunch',
-    date: new Date().toLocaleDateString(),
+    date: new Date('2025-01-01').toLocaleDateString(),
     category: 'Food',
     type: 'expense',
     amount: -1200,
@@ -19,7 +19,7 @@ const transactions: Transaction[] = [
   {
     id: 2,
     title: 'Salary',
-    date: new Date().toLocaleDateString(),
+    date: new Date('2025-01-02').toLocaleDateString(),
     category: 'Salary',
     type: 'income',
     amount: 125000,
@@ -27,7 +27,7 @@ const transactions: Transaction[] = [
   {
     id: 3,
     title: 'Dinner',
-    date:new Date().toLocaleDateString(),
+    date:new Date('2025-01-03').toLocaleDateString(),
     category: 'Food',
     type: 'expense',
     amount: -5000,
@@ -35,7 +35,7 @@ const transactions: Transaction[] = [
   {
     id: 4,
     title: 'Transport',
-    date: new Date().toLocaleDateString(),
+    date: new Date('2025-01-04').toLocaleDateString(),
     category: 'Transport',
     type: 'expense',
     amount: -3300,
