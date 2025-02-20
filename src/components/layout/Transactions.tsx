@@ -10,10 +10,11 @@ import { setSortType, setCategory, setSortBy } from '../../redux/slices/filterSl
 const MotionTransactionItem = motion.create(TransactionItem);
 
 interface TransactionProps {
-  notifyRemoveTransaction(): string;
+  notify(message: string): string;
+  onEditTransaction: (transaction: Transaction) => void;
 }
 
-function Transactions({ notifyRemoveTransaction }: TransactionProps) {
+function Transactions({ notify, onEditTransaction }: TransactionProps) {
   const [type, setType] = useState('all');
   const [category, setSortCategory] = useState('all');
   const [orderBy, setOrderByLocal] = useState('date_desc');
@@ -124,12 +125,13 @@ function Transactions({ notifyRemoveTransaction }: TransactionProps) {
                 date={item.date}
                 amount={item.amount}
                 category={item.category}
-                notifyRemoveTransaction={notifyRemoveTransaction}
+                notify={notify}
                 id={item.id}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.3 }}
+                onEditTransaction={() => onEditTransaction(item)}
               />
             ))
           )}

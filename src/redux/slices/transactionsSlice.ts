@@ -27,7 +27,7 @@ const transactions: Transaction[] = [
   {
     id: 3,
     title: 'Dinner',
-    date:new Date('2025-01-03').toLocaleDateString(),
+    date: new Date('2025-01-03').toLocaleDateString(),
     category: 'Food',
     type: 'expense',
     amount: -5000,
@@ -47,7 +47,6 @@ const amount = 115500;
 const initialState: InitialStateInterface = {
   transactions: transactions,
   amount: amount,
-
 };
 
 const transactionsSlice = createSlice({
@@ -68,8 +67,25 @@ const transactionsSlice = createSlice({
         return false;
       });
     },
+    updateTransaction(state, action: PayloadAction<Transaction>) {
+      const id = action.payload.id;
+      const updatedTransaction = action.payload;
+      state.transactions = state.transactions.map((transaction: Transaction) =>
+        transaction.id === id ? updatedTransaction : transaction,
+      );
+
+      const income = state.transactions
+        .filter((t: Transaction) => t.amount > 0)
+        .reduce((sum: number, t: Transaction) => sum + t.amount, 0);
+
+      const expense = state.transactions
+        .filter((t: Transaction) => t.amount < 0)
+        .reduce((sum: number, t: Transaction) => sum + t.amount, 0);
+
+      state.amount = income + expense;
+    },
   },
 });
 
-export const { addTransaction, removeTransaction } = transactionsSlice.actions;
+export const { addTransaction, removeTransaction, updateTransaction } = transactionsSlice.actions;
 export default transactionsSlice.reducer;

@@ -23,10 +23,10 @@ const CATEGORY_OPTIONS = Object.entries(AVAILABLE_CATEGORIES).map(
 const FORMATTED_DATE_NOW = new Date().toISOString().split('T')[0];
 
 interface FormProps {
-  notifyAddTransaction(): string;
+  notify(message: string): string;
 }
 
-function Form({ notifyAddTransaction }: FormProps) {
+function Form({ notify }: FormProps) {
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
   const [type, setType] = useState<Transaction['type']>('income');
@@ -59,7 +59,7 @@ function Form({ notifyAddTransaction }: FormProps) {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    notifyAddTransaction();
+    notify('Транзакция добавлена!');
     const newTransaction: Transaction = {
       title,
       amount: type === 'expense' ? -amount : +amount,
